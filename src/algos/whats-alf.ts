@@ -1,35 +1,17 @@
-import { QueryParams } from '../lexicon/types/app/bsky/feed/getFeedSkeleton'
-import { AppContext } from '../config'
+import { AppBskyFeedDefs } from '@atproto/api'
+import { FeedAlgo } from '../types'
 
-// max 15 chars
-export const shortname = 'whats-alf'
-
-export const handler = async (ctx: AppContext, params: QueryParams) => {
-  let builder = ctx.db
-    .selectFrom('post')
-    .selectAll()
-    .orderBy('indexedAt', 'desc')
-    .orderBy('cid', 'desc')
-    .limit(params.limit)
-
-  if (params.cursor) {
-    const timeStr = new Date(parseInt(params.cursor, 10)).toISOString()
-    builder = builder.where('post.indexedAt', '<', timeStr)
-  }
-  const res = await builder.execute()
-
-  const feed = res.map((row) => ({
-    post: row.uri,
-  }))
-
-  let cursor: string | undefined
-  const last = res.at(-1)
-  if (last) {
-    cursor = new Date(last.indexedAt).getTime().toString(10)
-  }
-
-  return {
-    cursor,
-    feed,
-  }
+export const cuckoldHotwifeFeed: FeedAlgo = {
+  uri: 'at://did:plc:fngtx3scv6zkv33a5fcc2f5r/app.bsky.feed.generator/cuckold-hotwife',
+  cid: '',
+  creatorDid: 'did:plc:fngtx3scv6zkv33a5fcc2f5r',
+  displayName: 'Cuckold & Hotwife Feed',
+  description: 'Posts that mention cuckold or hotwife',
+  filter: (post: AppBskyFeedDefs.FeedViewPost) => {
+    const text = post.post.record.text?.toLowerCase() || ''
+    return (
+      text.includes('cuckold') ||
+      text.includes('hotwife')
+    )
+  },
 }
