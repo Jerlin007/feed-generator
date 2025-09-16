@@ -1,28 +1,18 @@
-// hotwife-cuckold.ts
-// Simple algorithm: queries the public search endpoint for posts containing the keywords
-import { BskyAgent } from '@atproto/api';
+import { AppBskyFeedDefs } from '@atproto/api'
+import { FeedAlgo } from '../types'
 
-export default async function hotwifeCuckold(agent: BskyAgent, params: any) {
-  // build the search query. You can add more keywords or phrases here.
-  const query = '("cuckold" OR "hotwife" OR "#cuckold" OR "#hotwife") lang:en';
-  const limit = params?.limit ?? 40;
-
-  try {
-    const res = await agent.app.bsky.feed.searchPosts({
-      q: query,
-      sort: 'latest',
-      limit,
-    });
-
-    const posts = res.data?.posts ?? [];
-    // Map to the skeleton shape expected by the starter-kit:
-    const feed = posts.map((p: any) => ({ post: p.post.uri }));
-
-    // Cursor handling: forward the underlying cursor (if present)
-    const cursor = res.data?.cursor ?? null;
-    return { feed, cursor };
-  } catch (err) {
-    console.error('hotwifeCuckold error', err);
-    return { feed: [], cursor: null };
-  }
+export const cuckoldHotwifeFeed: FeedAlgo = {
+  uri: 'at://did:plc:fngtx3scv6zkv33a5fcc2f5r/app.bsky.feed.generator/cuckold-hotwife',
+  cid: '',
+  creatorDid: 'did:plc:fngtx3scv6zkv33a5fcc2f5r',
+  displayName: 'Cuckold & Hotwife Feed',
+  description: 'Posts that mention cuckold or hotwife',
+  filter: (post: AppBskyFeedDefs.FeedViewPost) => {
+    const text = post.post.record.text?.toLowerCase() || ''
+    return (
+      text.includes('cuckold') ||
+      text.includes('hotwife')
+    )
+  },
 }
+
