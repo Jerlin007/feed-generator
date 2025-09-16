@@ -8,10 +8,8 @@ export const whatsalf: FeedAlgo = {
   displayName: 'Cuckold & Hotwife Feed',
   description: 'Posts that mention cuckold or hotwife',
   filter: (post: AppBskyFeedDefs.FeedViewPost) => {
-    const text = post.post.record.text?.toLowerCase() || ''
-    return (
-      text.includes('cuckold') ||
-      text.includes('hotwife')
-    )
+    const text = post.post.record?.text?.toLowerCase() || ''
+    return text.includes('cuckold') || text.includes('hotwife')
   },
 }
+
