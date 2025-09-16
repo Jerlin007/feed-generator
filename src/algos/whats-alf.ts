@@ -1,8 +1,8 @@
 import { AppBskyFeedDefs } from '@atproto/api'
 import { FeedAlgo } from '../types'
 
-export const cuckoldHotwifeFeed: FeedAlgo = {
-  uri: 'at://did:plc:fngtx3scv6zkv33a5fcc2f5r/app.bsky.feed.generator/cuckold-hotwife',
+export const whatsalf: FeedAlgo = {
+  uri: 'at://did:plc:fngtx3scv6zkv33a5fcc2f5r/app.bsky.feed.generator/whats-alf',
   cid: '',
   creatorDid: 'did:plc:fngtx3scv6zkv33a5fcc2f5r',
   displayName: 'Cuckold & Hotwife Feed',
