@@ -1,31 +1,26 @@
 name: Publish Feed Generator
 
 on:
-  workflow_dispatch: # Run manually in GitHub UI
   push:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Publish Feed
+      - name: Install deps
+        run: yarn --frozen-lockfile
+      - name: Publish feed generator to Bluesky
         env:
-          FEEDGEN_SERVICE_DID: ${{ secrets.FEEDGEN_SERVICE_DID }}
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          FEEDGEN_PUBLISHER_DID: ${{ secrets.FEEDGEN_PUBLISHER_DID }}
           FEEDGEN_HOSTNAME: ${{ secrets.FEEDGEN_HOSTNAME }}
-          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
-          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-        run: npx ts-node scripts/publishFeedGen.ts
+        run: yarn publishFeed
+
