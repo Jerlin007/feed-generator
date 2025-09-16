@@ -13,5 +13,5 @@ const algos: Record<string, AlgoHandler> = {
 }
 
 export const algos = {
-  'whats-alf': whatsalf,
+  'cuckold-hotwife': whatsalf,
 }
