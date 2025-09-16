@@ -1,4 +1,5 @@
-import { AppContext } from '../config'
+import { whatsalf } from './whats-alf'
+
 import {
   QueryParams,
   OutputSchema as AlgoOutput,
@@ -11,4 +12,6 @@ const algos: Record<string, AlgoHandler> = {
   [whatsAlf.shortname]: whatsAlf.handler,
 }
 
-export default algos
+export const algos = {
+  'whats-alf': whatsalf,
+}
