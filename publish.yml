@@ -1,0 +1,31 @@
+name: Publish Feed Generator
+
+on:
+  workflow_dispatch: # Run manually in GitHub UI
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish Feed
+        env:
+          FEEDGEN_SERVICE_DID: ${{ secrets.FEEDGEN_SERVICE_DID }}
+          FEEDGEN_HOSTNAME: ${{ secrets.FEEDGEN_HOSTNAME }}
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: npx ts-node scripts/publishFeedGen.ts
